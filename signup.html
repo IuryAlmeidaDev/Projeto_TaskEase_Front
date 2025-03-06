@@ -3,24 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Criar Conta - TaskEase</title>
+  <title>Gerenciamento de Tarefas</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
   <div class="container">
-    <h1><span class="highlight">T</span>ask<span class="highlight">E</span>ase</h1>
-    <h4 class="slogan">O poder da organização nas suas mãos</h4>
+    <h1>TaskEase</h1>
+    <h4>Seu aliado no caminho da produtividade</h4>
 
-    <!-- Formulário de Cadastro -->
-    <div class="signup-section">
+    <!-- Formulário de Login -->
+    <div class="login-section" style="display:block;">
+      <h2>Login</h2>
+      <form id="login-form">
+        <input type="text" id="username" placeholder="Nome de usuário" required>
+        <input type="password" id="password" placeholder="Senha" required>
+        <button type="submit">Entrar</button>
+      </form>
+      <p>Não tem uma conta? <a href="#" id="show-signup-form">Criar conta</a></p>
+    </div>
+
+    <!-- Formulário de Cadastro (oculto inicialmente) -->
+    <div class="signup-section" style="display:none;">
       <h2>Criar Conta</h2>
       <form id="signup-form">
-        <input type="text" id="name" placeholder="Nome Completo" required>
+        <input type="text" id="signup-name" placeholder="Nome" required>
         <input type="text" id="signup-username" placeholder="Nome de usuário" required>
         <input type="password" id="signup-password" placeholder="Senha" required>
         <button type="submit">Criar Conta</button>
       </form>
+      <p>Já tem uma conta? <a href="#" id="show-login-form">Fazer login</a></p>
+    </div>
+
+    <!-- Seção de Tarefas (oculta inicialmente) -->
+    <div class="task-section" style="display:none;">
+      <h2>Tarefas</h2>
+      <ul id="task-list"></ul>
     </div>
   </div>
 
