@@ -1,5 +1,5 @@
 // URL base da API
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'https://projeto-taskease.onrender.com';
 
 // Funções para gerenciamento de credenciais
 function saveCredentials(username, password) {
@@ -38,12 +38,12 @@ async function fetchAPI(endpoint, method, body = null) {
   }
 
   console.log(`Fazendo requisição: ${method} ${API_BASE_URL}${endpoint}`);
-  
+
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
-    
+
     console.log(`Status da resposta: ${response.status}`);
-    
+
     if (!response.ok) {
       throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
     }
@@ -66,12 +66,10 @@ async function login(username, password) {
   try {
     // Salva as credenciais
     saveCredentials(username, password);
-    
+
     try {
       // Tenta acessar a lista de tarefas para verificar se a autenticação está correta
       await fetchAPI('/tasks/', 'GET');
-      
-      alert('Login bem-sucedido!');
       window.location.href = 'tasks.html';
     } catch (error) {
       // Se falhar com a API, informamos o erro
@@ -119,7 +117,7 @@ async function loadTasks() {
 
     // Carregar tarefas da API
     const tasks = await fetchAPI('/tasks/', 'GET');
-    
+
     taskList.innerHTML = ''; // Limpa a lista atual
 
     if (tasks.length === 0) {
@@ -131,14 +129,14 @@ async function loadTasks() {
 
     tasks.forEach(task => {
       const li = document.createElement('li');
-      
+
       // Formatar a data de término
       const endDate = new Date(task.endAt).toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric'
       });
-      
+
       // Formatar hora
       const endTime = new Date(task.endAt).toLocaleTimeString('pt-BR', {
         hour: '2-digit',
@@ -147,7 +145,7 @@ async function loadTasks() {
 
       // Determinar classe de status para estilização
       const statusClass = getStatusClass(task.status);
-      
+
       li.innerHTML = `
         <div class="task-title">${task.title}</div>
         <div class="task-description">${task.description || "Sem descrição"}</div>
@@ -157,10 +155,10 @@ async function loadTasks() {
         </div>
         <button class="delete-task" data-id="${task.id}">Excluir</button>
       `;
-      
+
       taskList.appendChild(li);
     });
-    
+
     // Adicionar eventos de exclusão
     document.querySelectorAll('.delete-task').forEach(button => {
       button.addEventListener('click', async (e) => {
@@ -188,7 +186,7 @@ async function deleteTask(taskId) {
 
 // Funções de utilidade
 function getStatusClass(status) {
-  switch(status) {
+  switch (status) {
     case 'pendente':
       return 'status-pending';
     case 'em-andamento':
@@ -216,47 +214,47 @@ function initTasksPage() {
   const listTasksSection = document.getElementById('list-tasks-section');
   const createTaskSection = document.getElementById('create-task-section');
   const welcomeMessage = document.getElementById('welcome-message');
-  
+
   // Verificando se estamos na página de tarefas
   if (!listTasksBtn || !createTaskBtn) return;
-  
+
   // Inicializar a data atual nos campos de data
   const now = new Date();
   const localDateTimeString = now.toISOString().slice(0, 16);
-  
+
   const startDateField = document.getElementById('task-start-date');
   if (startDateField) startDateField.value = localDateTimeString;
-  
+
   // Adicionar 7 dias para a data de término padrão
   const endDate = new Date();
   endDate.setDate(endDate.getDate() + 7);
-  
+
   const endDateField = document.getElementById('task-end-date');
   if (endDateField) endDateField.value = endDate.toISOString().slice(0, 16);
-  
+
   // Evento para mostrar a lista de tarefas
-  listTasksBtn.addEventListener('click', function(e) {
+  listTasksBtn.addEventListener('click', function (e) {
     e.preventDefault();
     welcomeMessage.classList.add('hidden');
     createTaskSection.classList.add('hidden');
     listTasksSection.classList.remove('hidden');
     loadTasks();
   });
-  
+
   // Evento para mostrar o formulário de criação de tarefa
-  createTaskBtn.addEventListener('click', function(e) {
+  createTaskBtn.addEventListener('click', function (e) {
     e.preventDefault();
     welcomeMessage.classList.add('hidden');
     listTasksSection.classList.add('hidden');
     createTaskSection.classList.remove('hidden');
   });
-  
+
   // Formulário de criação de tarefas
   const createTaskForm = document.getElementById('create-task-form');
   if (createTaskForm) {
-    createTaskForm.addEventListener('submit', async function(event) {
+    createTaskForm.addEventListener('submit', async function (event) {
       event.preventDefault();
-      
+
       const taskData = {
         title: document.getElementById('task-title').value,
         description: document.getElementById('task-description').value,
@@ -265,18 +263,18 @@ function initTasksPage() {
         startAt: document.getElementById('task-start-date').value,
         endAt: document.getElementById('task-end-date').value
       };
-      
+
       if (taskData.title) {
         const success = await addTask(taskData);
-        
+
         if (success) {
           // Limpa o formulário
           createTaskForm.reset();
-          
+
           // Resetar datas
           if (startDateField) startDateField.value = localDateTimeString;
           if (endDateField) endDateField.value = endDate.toISOString().slice(0, 16);
-          
+
           // Mostrar lista de tarefas
           welcomeMessage.classList.add('hidden');
           createTaskSection.classList.add('hidden');
@@ -288,9 +286,7 @@ function initTasksPage() {
       }
     });
   }
-  
-  // Removido status de conexão e botão de alternar
-  
+
   // Carregar tarefas inicialmente
   loadTasks();
 }
@@ -299,20 +295,18 @@ function initTasksPage() {
 function initLoginPage() {
   const loginForm = document.getElementById('login-form');
   if (loginForm) {
-    loginForm.addEventListener('submit', function(event) {
+    loginForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      
+
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
-      
+
       if (username && password) {
         login(username, password);
       } else {
         alert('Por favor, preencha todos os campos.');
       }
     });
-    
-    // Removido botão de modo offline
   }
 }
 
@@ -320,13 +314,13 @@ function initLoginPage() {
 function initSignupPage() {
   const signupForm = document.getElementById('signup-form');
   if (signupForm) {
-    signupForm.addEventListener('submit', function(event) {
+    signupForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      
+
       const name = document.getElementById('signup-name').value;
       const username = document.getElementById('signup-username').value;
       const password = document.getElementById('signup-password').value;
-      
+
       if (name && username && password) {
         signup(name, username, password);
       } else {
@@ -340,7 +334,7 @@ function initSignupPage() {
 function init() {
   // Determinar qual página está carregada e inicializar adequadamente
   const currentPath = window.location.pathname;
-  
+
   if (currentPath.includes('tasks.html')) {
     initTasksPage();
   } else if (currentPath.includes('signup.html')) {

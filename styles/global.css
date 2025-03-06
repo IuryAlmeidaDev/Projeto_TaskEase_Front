@@ -8,10 +8,13 @@
 body {
   font-family: 'Roboto', sans-serif;
   color: #333;
+  background-color: #f0f8ff;
 }
 
+/* Container principal */
 .container {
   display: flex;
+  height: 100vh;
 }
 
 /* Barra Lateral */
@@ -19,31 +22,44 @@ body {
   width: 250px;
   background-color: #2c3e50;
   color: #fff;
-  height: 100vh;
+  height: 100%;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sidebar h2 {
   margin-bottom: 20px;
   font-size: 24px;
+  font-weight: 600;
 }
 
 .sidebar ul.menu {
   list-style: none;
+  width: 100%;
+  padding: 0;
 }
 
 .sidebar ul.menu li {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .sidebar ul.menu li a {
-  color: #fff;
+  display: block;
+  padding: 12px;
+  color: #4CAF50;
   text-decoration: none;
   font-size: 18px;
+  text-align: center;
+  border-radius: 5px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .sidebar ul.menu li a:hover {
-  text-decoration: underline;
+  background-color: #388E3C;
+  color: #fff;
 }
 
 /* Área de Conteúdo */
@@ -51,8 +67,12 @@ body {
   flex: 1;
   padding: 20px;
   background-color: #f0f8ff;
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .hidden {
@@ -63,25 +83,40 @@ body {
 #create-task-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  max-width: 500px;
+  gap: 20px;
+  max-width: 100%;
+  width: 500px;
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.create-task-header {
+  font-size: 24px;
+  color: #4CAF50;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 30px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 }
 
 .form-group label {
   font-weight: 500;
   font-size: 16px;
+  color: #4CAF50;
 }
 
 #create-task-form input,
 #create-task-form textarea,
 #create-task-form select {
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -89,45 +124,72 @@ body {
 }
 
 #create-task-form textarea {
-  min-height: 100px;
+  min-height: 120px;
   resize: vertical;
 }
 
 #create-task-form button {
   padding: 12px;
   font-size: 16px;
-  background-color: #2c3e50;
+  background-color: #4CAF50;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
+  margin-top: 15px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #create-task-form button:hover {
-  background-color: #34495e;
+  background-color: #388E3C;
+  transform: scale(1.05);
 }
 
 /* Lista de Tarefas */
 #task-list {
   list-style: none;
   margin-top: 20px;
+  width: 100%;
+  max-width: 800px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  justify-content: center;
 }
 
 #task-list li {
-  background-color: #f9f9f9;
+  background-color: white;
   padding: 15px;
   border: 1px solid #ddd;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border-left: 4px solid #2c3e50;
+  border-radius: 10px;
+  border-left: 4px solid #4CAF50;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: grab;
+}
+
+#task-list li:active {
+  cursor: grabbing;
+}
+
+#task-list li:hover {
+  transform: scale(1.02);
+  border-left: 4px solid #388E3C;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Classe para efeito de arraste */
+.sortable-ghost {
+  opacity: 0.5;
+  background: #ddd;
+  transform: scale(1.05);
 }
 
 .task-title {
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 5px;
+  color: #4CAF50;
 }
 
 .task-description {
@@ -156,9 +218,10 @@ body {
   cursor: pointer;
   font-size: 14px;
   margin-top: 10px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s ease;
 }
 
 .delete-task:hover {
   background-color: #c0392b;
+  transform: scale(1.05);
 }
