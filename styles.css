@@ -64,6 +64,7 @@ h1 .highlight:hover {
     margin: 0 auto 10px;
 }
 
+/* Estilos da Seção de Login */
 .login-section {
     margin-bottom: 20px;
 }
@@ -105,6 +106,7 @@ button:hover {
     background-color: #388E3C;
 }
 
+/* Estilos para a Seção de Tarefas */
 .task-section {
     display: none;
 }
@@ -133,7 +135,7 @@ li em {
     color: #666;
 }
 
-/* styles.css */
+/* Estilos para a Seção de Cadastro */
 .signup-section {
     margin-top: 20px;
 }
@@ -173,4 +175,28 @@ li em {
 
 .signup-section button:hover {
     background-color: #388E3C;
+}
+
+/* Estilos do link "Criar conta" */
+.signup-prompt {
+    font-size: 1rem;
+    margin-top: 15px;
+    color: #7f8c8d;
+}
+
+.signup-link {
+    color: #4CAF50;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.signup-link:hover {
+    color: #388E3C;
+    transform: scale(1.1);
+}
+
+/* Estilos da animação do destaque de link */
+.signup-link:hover {
+    transform: scale(1.1);
 }
