@@ -1,5 +1,5 @@
 // URL base da API
-const API_BASE_URL = 'https://projeto-taskease.onrender.com';
+const API_BASE_URL = 'https://projeto-taskease-back.onrender.com';
 
 // Funções para gerenciamento de credenciais
 function saveCredentials(username, password) {
