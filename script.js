@@ -5,6 +5,8 @@ const API_BASE_URL = 'https://projeto-taskease-back.onrender.com';
 function saveCredentials(username, password) {
   const credentials = btoa(`${username}:${password}`);
   localStorage.setItem('userCredentials', credentials);
+  // Também vamos salvar o username para uso posterior
+  localStorage.setItem('username', username);
   return credentials;
 }
 
@@ -12,8 +14,22 @@ function getCredentials() {
   return localStorage.getItem('userCredentials');
 }
 
+function getUsername() {
+  return localStorage.getItem('username');
+}
+
 function clearCredentials() {
   localStorage.removeItem('userCredentials');
+  localStorage.removeItem('username');
+  localStorage.removeItem('userId');
+}
+
+function saveUserId(userId) {
+  localStorage.setItem('userId', userId);
+}
+
+function getUserId() {
+  return localStorage.getItem('userId');
 }
 
 // Função para fazer requisições à API
@@ -69,7 +85,18 @@ async function login(username, password) {
 
     try {
       // Tenta acessar a lista de tarefas para verificar se a autenticação está correta
-      await fetchAPI('/tasks/', 'GET');
+      const tasks = await fetchAPI('/tasks/', 'GET');
+      
+      // Quando carregar as tarefas, procure uma tarefa do usuário atual para obter o ID
+      if (tasks && tasks.length > 0) {
+        // Assumimos que as tarefas retornadas são do usuário logado
+        // Salvamos o ID do usuário da primeira tarefa
+        saveUserId(tasks[0].idUser);
+      } else {
+        // Se não tem tarefas, vamos buscar ou criar um ID
+        await fetchUserId(username);
+      }
+      
       window.location.href = 'tasks.html';
     } catch (error) {
       // Se falhar com a API, informamos o erro
@@ -82,11 +109,38 @@ async function login(username, password) {
   }
 }
 
+// Função para buscar o ID do usuário atual
+async function fetchUserId(username) {
+  try {
+    // Tentativa 1: Buscar todos os usuários e filtrar pelo username
+    const users = await fetchAPI('/users/', 'GET');
+    
+    if (users && Array.isArray(users)) {
+      const currentUser = users.find(user => user.username === username);
+      if (currentUser && currentUser.id) {
+        saveUserId(currentUser.id);
+        return currentUser.id;
+      }
+    }
+    
+    // Se não conseguiu encontrar o ID, alertamos o usuário
+    console.warn('Não foi possível determinar o ID do usuário automaticamente.');
+  } catch (error) {
+    console.error('Erro ao buscar ID do usuário:', error);
+  }
+}
+
 async function signup(name, username, password) {
   try {
     // Salvar usuário via API
     const userData = { name, username, password };
-    await fetchAPI('/users/', 'POST', userData);
+    const response = await fetchAPI('/users/', 'POST', userData);
+    
+    // Se tiver ID no retorno, já salvamos
+    if (response && response.id) {
+      saveUserId(response.id);
+    }
+    
     alert('Conta criada com sucesso!');
     window.location.href = 'index.html'; // Redireciona para o login
   } catch (error) {
@@ -97,11 +151,22 @@ async function signup(name, username, password) {
 // Funções para gerenciamento de tarefas
 async function addTask(taskData) {
   try {
+    console.log('Enviando dados da tarefa:', taskData);
     // Salvar tarefa via API
-    await fetchAPI('/tasks/', 'POST', taskData);
+    const response = await fetchAPI('/tasks/', 'POST', taskData);
+    
+    // Se a tarefa foi criada com sucesso e temos o ID do usuário no retorno
+    if (response && response.idUser) {
+      // Atualizamos o ID do usuário se ainda não temos
+      if (!getUserId()) {
+        saveUserId(response.idUser);
+      }
+    }
+    
     alert('Tarefa criada com sucesso!');
     return true;
   } catch (error) {
+    console.error('Erro detalhado:', error);
     alert('Erro ao criar tarefa: ' + error.message);
     return false;
   }
@@ -117,6 +182,11 @@ async function loadTasks() {
 
     // Carregar tarefas da API
     const tasks = await fetchAPI('/tasks/', 'GET');
+    
+    // Se temos tarefas, podemos capturar o ID do usuário da primeira tarefa
+    if (tasks && tasks.length > 0 && !getUserId()) {
+      saveUserId(tasks[0].idUser);
+    }
 
     taskList.innerHTML = ''; // Limpa a lista atual
 
@@ -255,11 +325,26 @@ function initTasksPage() {
     createTaskForm.addEventListener('submit', async function (event) {
       event.preventDefault();
 
+      let userId = getUserId();
+      
+      // Se não temos o ID, tentamos buscar
+      if (!userId) {
+        // Tente buscar o ID do usuário atual
+        await fetchUserId(getUsername());
+        userId = getUserId();
+        
+        // Se ainda não temos um ID, usamos o ID que você tinha anteriormente como fallback
+        if (!userId) {
+          console.warn('Usando ID de usuário fallback para criação de tarefa.');
+          userId = "2df0817f-8d58-480c-a075-16f38c827cd3";
+        }
+      }
+
       const taskData = {
         title: document.getElementById('task-title').value,
         description: document.getElementById('task-description').value,
         status: document.getElementById('task-status')?.value || 'pendente',
-        idUser: "2df0817f-8d58-480c-a075-16f38c827cd3", // ID de usuário fixo para exemplo
+        idUser: userId,
         startAt: document.getElementById('task-start-date').value,
         endAt: document.getElementById('task-end-date').value
       };
