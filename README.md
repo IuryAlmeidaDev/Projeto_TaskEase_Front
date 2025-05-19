@@ -1,5 +1,29 @@
-# Vue 3 + Vite
+# Projeto TaskEase Front
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Este é o front-end do **TaskEase**, desenvolvido com [Vue 3](https://vuejs.org/) + [Vite](https://vitejs.dev/). O objetivo do projeto é facilitar a organização de tarefas com uma interface moderna e eficiente.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 🚀 Tecnologias Utilizadas
+
+- [Vue 3](https://vuejs.org/)
+- [Vite](https://vitejs.dev/)
+- [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+
+---
+
+## 📦 Pré-requisitos
+
+Antes de tudo, você precisa ter instalado:
+
+- [Node.js](https://nodejs.org/) (versão recomendada: 18+)
+- npm (gerenciador de pacotes que já vem com o Node) ou yarn
+
+---
+
+## 🔧 Instalação e Execução
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/IuryAlmeidaDev/Projeto_TaskEase_Front.git
+cd Projeto_TaskEase_Front
