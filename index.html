@@ -1,32 +1,16 @@
+<!-- index.html (na raiz do projeto) -->
+
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TaskEase - Login</title>
-  <link rel="stylesheet" href="styles/login.css">
-</head>
-<body>
-  <div class="container">
-    <h1><span class="highlight">T</span>ask<span class="highlight">E</span>ase</h1>
-    <h4 class="slogan">O poder da organização nas suas mãos</h4>
-
-    <!-- Formulário de Login -->
-    <div class="login-section">
-      <h2>Login</h2>
-      <form id="login-form">
-        <input type="text" id="username" placeholder="Nome de usuário" required>
-        <input type="password" id="password" placeholder="Senha" required>
-        <button type="submit">Entrar</button>
-      </form>
-
-      <!-- Link para a página de cadastro -->
-      <p class="signup-prompt">
-        Ainda não tem uma conta? <a href="signup.html" class="signup-link">Criar conta</a>
-      </p>
-    </div>
-  </div>
-
-  <script type="module" src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskEase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
